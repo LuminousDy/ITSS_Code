@@ -15,3 +15,7 @@ runs/detect/YOLOv8_20250422_122835/weights/*
 
 # Ignore editor-specific files
 .cursor
+
+# Ignore specific model weight files
+yolo11n.pt
+yolov8s.pt
