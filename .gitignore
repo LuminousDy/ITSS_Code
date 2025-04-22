@@ -1,2 +1,5 @@
 dataset/
-results/
+runs/
+.cursor
+yolo11n.pt
+yolov8s.pt
