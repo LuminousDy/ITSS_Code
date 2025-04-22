@@ -1,0 +1,12 @@
+albumentations==2.0.5
+matplotlib==3.10.1
+numpy==2.2.5
+opencv_contrib_python==4.11.0.86
+opencv_python==4.11.0.86
+opencv_python_headless==4.11.0.86
+pandas==2.2.3
+PyYAML==6.0.2
+PyYAML==6.0.2
+seaborn==0.13.2
+tqdm==4.67.1
+ultralytics==8.3.113

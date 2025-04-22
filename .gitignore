@@ -2,13 +2,16 @@
 dataset/*
 !dataset/.gitkeep
 
-# Ignore the runs directory
+# Ignore the runs directory but keep model weights used by main.py
 runs/*
 !runs/.gitkeep
+!runs/detect/
+runs/detect/*
+!runs/detect/YOLOv8_20250422_122835/
+runs/detect/YOLOv8_20250422_122835/*
+!runs/detect/YOLOv8_20250422_122835/weights/
+runs/detect/YOLOv8_20250422_122835/weights/*
+!runs/detect/YOLOv8_20250422_122835/weights/best.pt
 
 # Ignore editor-specific files
 .cursor
-
-# Ignore specific model weight files
-yolo11n.pt
-yolov8s.pt

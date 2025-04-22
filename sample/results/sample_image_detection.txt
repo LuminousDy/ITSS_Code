@@ -1,0 +1,8 @@
+Detection results for sample_image.jpg:
+--------------------------------------------------
+1. Class: Mass, Confidence: 0.5162
+   Bounding Box: [x1=197, y1=248, x2=225, y2=260]
+
+2. Class: Calc, Confidence: 0.3419
+   Bounding Box: [x1=221, y1=259, x2=230, y2=264]
+
