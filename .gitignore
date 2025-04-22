@@ -1,9 +1,10 @@
 # Ignore the dataset directory but keep .gitkeep files
-dataset/
+dataset/*
 !dataset/.gitkeep
 
 # Ignore the runs directory
-runs/
+runs/*
+!runs/.gitkeep
 
 # Ignore editor-specific files
 .cursor
