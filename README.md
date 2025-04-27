@@ -1,6 +1,6 @@
-# Mammography Object Detection Framework with YOLOv8
+# Mammography Analysis Framework with Object Detection, Classification, and Medical Report Generation
 
-This framework provides a comprehensive solution for detecting calcifications and masses in mammography images using YOLOv8. The pipeline offers end-to-end capabilities from data preprocessing through model training to performance evaluation.
+This comprehensive framework provides an end-to-end solution for mammography image analysis using object detection (YOLOv8), image classification (EfficientNetV2B0), and medical report generation (Vision-Language Model). The pipeline offers capabilities from data preprocessing through model training to performance evaluation and medical report generation.
 
 ## Repository Structure
 
@@ -14,42 +14,64 @@ This framework provides a comprehensive solution for detecting calcifications an
 │   └── processed dataset/        # Preprocessed datasets in YOLOv8 format
 │       ├── CBIS-DDSM/
 │       │   ├── train/            # Training images and labels
-│       │   ├── valid/            # Validation images and labels
-│       │   ├── test/             # Test images and labels
-│       │   └── data.yaml         # Dataset configuration
-│       └── VinDr-Mammo/          # Similar structure as CBIS-DDSM
-│
-├── od_plp/                       # Main code directory
-│   ├── pipeline/                 # Implementation modules
-│   │   ├── CBIS_data_augmentation.py   # CBIS-DDSM data augmentation
-│   │   ├── VinDr_data_augmentation.py  # VinDr-Mammo data augmentation
-│   │   ├── VinDr_data_preprocessing.py # Data preprocessing for VinDr
-│   │   ├── YOLOv8_train.py             # Training script for YOLOv8
-│   │   └── YOLOv8_test.py              # Testing and evaluation script
-│   ├── main.py                   # Main inference script for single image detection
-│   └── utils/                    # Helper functions and utilities
-│
-├── sample/                       # Sample data and results
-│   ├── sample_data/              # Sample mammography images 
-│   └── results/                  # Detection results output
-│
-└── runs/                         # Training outputs and results
-    └── detect/                   # Detection results
-        └── YOLOv8_[timestamp]/   # Experiment results
-            ├── weights/          # Model checkpoints
-            └── ...               # TensorBoard logs, metrics, visualizations
+│   │   │   ├── train/            # Training images and labels
+│   │   │   ├── valid/            # Validation images and labels
+│   │   │   ├── test/             # Test images and labels
+│   │   │   └── data.yaml         # Dataset configuration
+│   │   └── VinDr-Mammo/          # Similar structure as CBIS-DDSM
+│   │
+│   ├── od_plp/                       # Object Detection module
+│   │   ├── pipeline/                 # Implementation modules
+│   │   │   ├── CBIS_data_augmentation.py   # CBIS-DDSM data augmentation
+│   │   │   ├── VinDr_data_augmentation.py  # VinDr-Mammo data augmentation
+│   │   │   ├── VinDr_data_preprocessing.py # Data preprocessing for VinDr
+│   │   │   ├── YOLOv8_train.py             # Training script for YOLOv8
+│   │   │   └── YOLOv8_test.py              # Testing and evaluation script
+│   │   ├── od_main.py                # Inference script for object detection
+│   │   └── utils/                    # Helper functions and utilities
+│   │
+│   ├── ic_plp/                       # Image Classification module
+│   │   ├── pipeline/                 # Implementation modules
+│   │   │   ├── data_preprocessing.py # Data preprocessing for classification
+│   │   │   ├── model_train.py        # Training script for classification
+│   │   │   └── model_test.py         # Testing and evaluation script
+│   │   └── ic_main.py                # Inference script for image classification
+│   │
+│   ├── vlm_plp/                      # Vision-Language Model module
+│   │   ├── vlm_main.py               # Script for medical report generation
+│   │   └── utils/                    # Helper functions for VLM
+│   │
+│   ├── src/                          # Integration scripts
+│   │   └── main.py                   # Unified main script integrating OD, IC, and VLM
+│   │
+│   ├── sample/                       # Sample data and results
+│   │   ├── sample_data/              # Sample mammography images 
+│   │   └── results/                  # Results output directory
+│   │
+│   └── runs/                         # Training outputs and results
+│       ├── detect/                   # Detection model outputs
+│       │   └── YOLOv8_[timestamp]/   # Experiment results
+│       │       ├── weights/          # Model checkpoints
+│       │       └── ...               # TensorBoard logs, metrics, visualizations
+│       └── classification/           # Classification model outputs
+│           └── IC_[timestamp]/       # Experiment results
+│               ├── weights/          # Model checkpoints
+│               └── ...               # Logs and evaluation results
 ```
 
 ## Key Features
 
 - **Multi-Dataset Support**: Works with InBreast, VinDr-Mammo, and CBIS-DDSM datasets
-- **YOLOv8 Integration**: Utilizes state-of-the-art YOLOv8 architecture for accurate detection
-- **Comprehensive Data Preprocessing**: Converts various mammography formats to standardized YOLOv8 format
+- **YOLOv8 Integration**: Utilizes state-of-the-art YOLOv8 architecture for accurate detection of calcifications and masses
+- **Image Classification**: EfficientNetV2B0-based classification of mammograms as benign or malignant
+- **Medical Report Generation**: AI-powered generation of comprehensive medical reports using VLM (Vision-Language Model)
+- **Comprehensive Data Preprocessing**: Converts various mammography formats to standardized formats
 - **Advanced Data Augmentation**: Implements domain-specific augmentations for mammography
 - **Fine-Tuned Training**: Customized training pipeline optimized for medical imaging
 - **Detailed Evaluation**: Comprehensive metrics including mAP, precision-recall analysis and confusion matrices
 - **TensorBoard Integration**: Real-time monitoring of training progress and results visualization
-- **Single Image Inference**: Detect calcifications and masses in individual mammography images
+- **Unified Pipeline**: Integrated workflow combining detection, classification, and report generation
+- **Flexible API**: Multiple ways to interact with the framework through command line or programmatic API
 
 ## Dataset Information
 
@@ -59,9 +81,9 @@ The framework processes three mammography datasets:
 - **VinDr-Mammo**: Large-scale dataset for breast cancer detection from Vietnam
 - **InBreast**: High-resolution mammography dataset with detailed annotations
 
-Datasets are preprocessed into standardized YOLOv8 format with the following structure:
+Datasets are preprocessed into standardized format with the following structure:
 - `train/images/` - Training images
-- `train/labels/` - YOLOv8 format labels (normalized bounding box coordinates)
+- `train/labels/` - Labels (normalized bounding box coordinates for detection)
 - `valid/images/` - Validation images
 - `valid/labels/` - Validation labels
 - `data.yaml` - Dataset configuration file
@@ -72,14 +94,15 @@ Datasets are preprocessed into standardized YOLOv8 format with the following str
 
 - Python 3.8+
 - PyTorch 1.10+
+- TensorFlow 2.9+ (for classification module)
 - CUDA-capable GPU (recommended)
 
 ### Setup
 
 ```bash
 # Clone the repository
-git clone https://github.com/username/mammography-detection.git
-cd mammography-detection
+git clone https://github.com/username/mammography-analysis.git
+cd mammography-analysis
 
 # Create and activate a virtual environment (recommended)
 python -m venv venv
@@ -89,53 +112,119 @@ venv\Scripts\activate
 source venv/bin/activate
 
 # Install required packages
-pip install ultralytics pandas numpy matplotlib seaborn tqdm albumentations opencv-python
+pip install -r requirements.txt
 
-# Set up datasets
-# Place original datasets in dataset/original dataset/[DATASET_NAME]
+# Set up environment variables for API keys (for VLM)
+# On Windows PowerShell
+$env:NIE_QWEN_API_KEY='your_api_key'
+# On Windows CMD
+set NIE_QWEN_API_KEY=your_api_key
+# On macOS/Linux
+export NIE_QWEN_API_KEY='your_api_key'
 ```
 
-## Complete Pipeline Workflow
+## Integrated Pipeline Usage
 
-### 1. Data Preprocessing
+The framework now provides a unified entry point through `src/main.py` that integrates object detection, image classification, and medical report generation. You can run the complete pipeline or individual components.
 
-Convert mammography datasets to YOLOv8 format:
+### Command Line Interface
+
+#### Complete Pipeline
+
+Run the complete analysis pipeline (detection, classification, and report generation):
 
 ```bash
-# Process VinDr-Mammo dataset
-python od_plp/pipeline/VinDr_data_preprocessing.py
-
-# Process CBIS-DDSM dataset (if not already in YOLOv8 format)
-# Note: CBIS-DDSM often comes pre-processed
+python src/main.py pipeline \
+  --image sample/sample_data/sample_image.jpg \
+  --od-model runs/detect/YOLOv8_20250422_122835/weights/best.pt \
+  --ic-model runs/classification/IC_20250427_170000/weights/best.keras \
+  --vlm-model Qwen2.5-VL-7B \
+  --od-conf 0.25 \
+  --ic-conf 0.5 \
+  --save \
+  --show
 ```
 
-### 2. Data Augmentation
+#### Object Detection Only
 
-Apply specific augmentations to improve model robustness:
+Run only the object detection component:
 
 ```bash
-# Augment VinDr-Mammo dataset
-python od_plp/pipeline/VinDr_data_augmentation.py
-
-# Augment CBIS-DDSM dataset
-python od_plp/pipeline/CBIS_data_augmentation.py
+python src/main.py od \
+  --image sample/sample_data/sample_image.jpg \
+  --model runs/detect/YOLOv8_20250422_122835/weights/best.pt \
+  --conf 0.25 \
+  --save \
+  --show
 ```
 
-#### Implemented Augmentations:
+#### Image Classification Only
 
-- **Image Preprocessing**:
-  - Resize to 416×416
-  - Auto-contrast via adaptive equalization (CLAHE)
-  
-- **Augmentation Techniques**:
-  - Random crop (0-20%)
-  - Salt and pepper noise (5% of pixels)
-  - Random rotation (±15°)
-  - Random horizontal flip
-  - Brightness and contrast adjustments
-  - Gaussian blur
+Run only the image classification component:
 
-## Training Guide
+```bash
+python src/main.py ic \
+  --image sample/sample_data/sample_image.jpg \
+  --model runs/classification/IC_20250427_170000/weights/best.keras \
+  --conf 0.5 \
+  --imgsz 224 \
+  --save \
+  --show
+```
+
+#### Medical Report Generation Only
+
+Run only the VLM-based medical report generation (requires detection and classification results):
+
+```bash
+python src/main.py vlm \
+  --image sample/results/sample_image_detection.jpg \
+  --model Qwen2.5-VL-7B \
+  --detection-file sample/results/sample_image_detection.txt \
+  --classification-file sample/results/sample_image_classification.txt \
+  --save \
+  --show
+```
+
+### Common Parameters
+
+- `--image`: Path to the input mammography image
+- `--save`: Save results to sample/results/
+- `--show`: Display results (requires a GUI environment)
+
+### Mode-Specific Parameters
+
+#### Pipeline Mode Parameters:
+- `--od-model`: Path to object detection model weights
+- `--ic-model`: Path to image classification model weights
+- `--vlm-model`: Name of the VLM model to use
+- `--od-conf`: Confidence threshold for object detection
+- `--ic-conf`: Confidence threshold for image classification
+- `--device`: Device to run on (empty for auto, cpu, 0, 1, etc.)
+
+#### Object Detection Mode Parameters:
+- `--model`: Path to object detection model weights
+- `--conf`: Confidence threshold for detections
+- `--iou`: IoU threshold for NMS
+- `--imgsz`: Image size for inference
+- `--device`: Device to run on
+- `--max-det`: Maximum number of detections per image
+
+#### Image Classification Mode Parameters:
+- `--model`: Path to classification model weights
+- `--conf`: Confidence threshold for classification
+- `--imgsz`: Image size for inference
+- `--device`: Device to run on
+
+#### VLM Mode Parameters:
+- `--model`: Name of the VLM model to use
+- `--detection-file`: Path to detection results file
+- `--classification-file`: Path to classification results file
+- `--custom-prompt`: Custom prompt to use instead of the default prompt
+
+## Object Detection Module
+
+### Training Guide
 
 The framework uses YOLOv8, a state-of-the-art object detection model, for detecting calcifications and masses in mammography images. Follow these steps to train your own model:
 
@@ -179,37 +268,7 @@ python od_plp/pipeline/YOLOv8_train.py \
 - `--batch`: Batch size
 - `--device`: Computing device (0 for first GPU, cpu for CPU)
 
-#### Advanced Training Parameters:
-
-- `--patience`: Early stopping patience (default: 50)
-- `--save-period`: Save checkpoint every x epochs (default: 10)
-- `--lr0`: Initial learning rate (default: 0.01)
-- `--lrf`: Final learning rate as a fraction of lr0 (default: 0.01)
-- `--workers`: Number of worker threads for data loading (default: 8)
-- `--project`: Project directory (default: runs/detect)
-- `--name`: Experiment name (default: YOLOv8_[timestamp])
-
-### 3. Monitor Training
-
-The training script automatically logs training progress and saves checkpoints. You can monitor the training using TensorBoard:
-
-```bash
-tensorboard --logdir=runs/detect/YOLOv8_[timestamp]
-```
-
-Training metrics, model performance, and sample detections will be displayed in the TensorBoard dashboard.
-
-### 4. Training Output
-
-After training is complete, the following outputs will be generated:
-- **Metrics**: Precision, recall, mAP@0.5, mAP@0.5:0.95
-- **Visualizations**: PR curve, confusion matrix, examples of predictions
-- **Model weights**:
-  - `best.pt`: Best model weights according to validation mAP
-  - `last.pt`: Latest model weights
-  - `epoch_N.pt`: Model weights at specific epochs (based on save-period)
-
-## Evaluation Guide
+### 3. Evaluation
 
 After training, evaluate the model's performance on a test dataset:
 
@@ -221,153 +280,105 @@ python od_plp/pipeline/YOLOv8_test.py \
   --iou 0.7
 ```
 
-#### Evaluation Parameters:
+## Image Classification Module
 
-- `--data`: Path to data.yaml file
-- `--model`: Path to trained model weights
-- `--conf`: Confidence threshold for detections (default: 0.25)
-- `--iou`: IoU threshold for NMS (default: 0.7)
-- `--save-txt`: Save results to text files
-- `--save-json`: Save results in COCO JSON format
-- `--verbose`: Print verbose output
+The image classification module uses EfficientNetV2B0 to classify mammograms as benign or malignant.
 
-The evaluation script will:
-1. Load the specified model
-2. Evaluate it on the validation or test dataset
-3. Calculate and display performance metrics
-4. Generate visualizations (confusion matrix, PR curves, etc.)
-5. Run predictions on test images and save the results
-
-## Inference Guide
-
-The framework provides two ways to perform inference on single mammography images:
-
-### 1. Command Line Interface
-
-Use the `main.py` script to detect calcifications and masses in a single image:
+### Running Classification Inference
 
 ```bash
-python od_plp/main.py \
+python ic_plp/ic_main.py \
   --image sample/sample_data/sample_image.jpg \
-  --conf 0.25 \
+  --model runs/classification/IC_20250427_170000/weights/best.keras \
+  --conf 0.5 \
+  --imgsz 224 \
   --save \
   --show
 ```
 
-#### Required Parameters:
+#### Classification Parameters:
 - `--image`: Path to the input mammography image
-
-#### Optional Parameters:
-- `--model`: Path to model weights (default: runs/detect/YOLOv8_20250422_122835/weights/best.pt)
-- `--conf`: Confidence threshold (default: 0.25)
-- `--iou`: IoU threshold for NMS (default: 0.7)
-- `--imgsz`: Image size for inference (default: 640)
+- `--model`: Path to classification model weights
+- `--conf`: Confidence threshold (default: 0.5)
+- `--imgsz`: Image size for inference (default: 224)
 - `--device`: Device to run on (empty for auto, cpu, 0, 1, etc.)
 - `--save`: Save results to sample/results/ directory
-- `--show`: Display detection results (requires a GUI environment)
-- `--max-det`: Maximum number of detections per image (default: 300)
+- `--show`: Display classification results
 
-#### Example Output:
+#### Example Classification Output:
 ```
-Loading model from runs/detect/YOLOv8_20250422_122835/weights/best.pt...
-Running detection on sample/sample_data/sample_image.jpg...
-
-Detection Results for sample_image.jpg:
-Found 2 objects
-  1. Mass: 0.5162, Box: [197, 248, 225, 260]
-  2. Calc: 0.3419, Box: [221, 259, 230, 264]
-Inference completed in 0.99 seconds
-Results saved to sample/results
-  - Detection image: sample/results/sample_image_detection.jpg
-  - Detection data: sample/results/sample_image_detection.txt
+Classification Results for sample_image.jpg:
+Class: Benign
+Confidence: 52.41%
+Benign Probability: 52.41%
+Malignant Probability: 47.59%
+Inference time: 0.09 seconds
 ```
 
-### 2. Programmatic API
+## Medical Report Generation Module
 
-Import and use the `infer_single_image` function in your Python code:
+The VLM-based medical report generation module uses a Vision-Language Model to generate comprehensive medical reports based on the image, detection results, and classification results.
 
-```python
-from od_plp.main import infer_single_image
+### Running VLM Inference
 
-# Perform detection
-detections = infer_single_image(
-    image_path="sample/sample_data/sample_image.jpg",
-    model_path="runs/detect/YOLOv8_20250422_122835/weights/best.pt",
-    conf=0.25,
-    show=True,
-    save=True
-)
-
-# Process detection results
-for i, det in enumerate(detections):
-    print(f"Detection {i+1}:")
-    print(f"  Class: {det['class']}")
-    print(f"  Confidence: {det['confidence']:.4f}")
-    print(f"  Bounding Box: {det['bbox']}")
+```bash
+python vlm_plp/vlm_main.py \
+  --image sample/results/sample_image_detection.jpg \
+  --model Qwen2.5-VL-7B \
+  --detection-file sample/results/sample_image_detection.txt \
+  --classification-file sample/results/sample_image_classification.txt \
+  --save \
+  --show
 ```
 
-#### Parameters:
-- `image_path`: Path to the input mammography image
-- `model_path`: Path to model weights (optional)
-- `conf`: Confidence threshold (default: 0.25)
-- `show`: Whether to display results (default: False)
-- `save`: Whether to save results (default: False)
+#### VLM Parameters:
+- `--image`: Path to the input mammography image
+- `--model`: Name of the VLM model to use (default: Qwen2.5-VL-7B)
+- `--detection-file`: Path to detection results file
+- `--classification-file`: Path to classification results file
+- `--save`: Save results to sample/results/ directory
+- `--show`: Display the generated report
 
-#### Return Value:
-A list of dictionaries, each containing:
-- `class`: Detected class name (Mass or Calc)
-- `confidence`: Detection confidence score
-- `bbox`: Bounding box coordinates [x1, y1, x2, y2]
-
-### 3. Interpreting Detection Results
-
-The detection results include:
-- **Class**: "Mass" or "Calc" (calcification)
-- **Confidence**: A score between 0 and 1 indicating the model's confidence
-- **Bounding Box**: The coordinates [x1, y1, x2, y2] defining the location of the detected abnormality
-
-The saved output includes:
-1. An annotated image with colored bounding boxes (red for Mass, green for Calc)
-2. A text file with detailed detection information
+#### Example VLM Output:
+The VLM generates a comprehensive medical report with two main sections:
+1. **Data Analysis Summary**: Technical analysis of detection and classification results
+2. **Professional Radiological Assessment**: Expert-like interpretation with medical terminology, including BI-RADS assessment and follow-up recommendations
 
 ## Performance Metrics
 
 The framework evaluates models using several metrics:
 
-- **mAP@0.5**: Mean Average Precision at IoU threshold 0.5
-- **mAP@0.5:0.95**: Mean Average Precision averaged over IoU thresholds
-- **Precision**: How many of the detected objects are relevant
-- **Recall**: How many relevant objects are detected
-- **IoU (Intersection over Union)**: Measures bounding box accuracy
+- **Object Detection**: mAP@0.5, mAP@0.5:0.95, Precision, Recall
+- **Image Classification**: Accuracy, Precision, Recall, F1-Score, AUC
+- **Medical Report Generation**: Qualitative assessment by medical professionals
 
 ## Troubleshooting
 
 ### Common Issues
 
-1. **Missing Dataset Files**:
-   - Ensure all dataset directories follow the expected structure
-   - Check that data.yaml correctly points to image directories
+1. **Missing Environment Variables**:
+   - Ensure `NIE_QWEN_API_KEY` is set for VLM functionality
 
-2. **CUDA Out of Memory**:
+2. **Model Loading Issues**:
+   - Verify model paths are correct
+   - For classification models, ensure TensorFlow is properly installed
+
+3. **API Connection Problems**:
+   - Check internet connection for VLM API calls
+   - Verify API key is valid and has sufficient permissions
+
+4. **Integration Pipeline Errors**:
+   - Make sure all component modules are functioning independently first
+   - Check that output files from earlier stages exist before running later stages
+
+5. **CUDA Out of Memory**:
    - Reduce batch size
-   - Try a smaller YOLOv8 model variant
-
-3. **Path Errors in Windows**:
-   - Use double backslashes or raw strings for Windows paths
-   - Alternatively, use forward slashes which work cross-platform
-
-4. **TensorBoard Not Showing Data**:
-   - Verify TensorBoard is enabled in Ultralytics settings
-   - Check log directory path is correct
-
-5. **Inference Issues**:
-   - Ensure the model weights file exists at the specified path
-   - Try lowering the confidence threshold if no detections are found
-   - Check that input images are in a supported format (jpg, png, etc.)
+   - Try a smaller model variant
 
 ## Acknowledgements
 
 - YOLOv8 implementation by [Ultralytics](https://github.com/ultralytics/ultralytics)
 - The CBIS-DDSM dataset by [The Cancer Imaging Archive](https://wiki.cancerimagingarchive.net/display/Public/CBIS-DDSM)
 - VinDr-Mammo dataset by [Vingroup Big Data Institute](https://vindr.ai/datasets/mammo)
-- InBreast dataset by [INESC Porto](https://www.inf.ufg.br/~rogerio/inbreast/) 
+- InBreast dataset by [INESC Porto](https://www.inf.ufg.br/~rogerio/inbreast/)
+- Vision-Language Model provided by NIE 
