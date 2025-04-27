@@ -1,0 +1,45 @@
+You are an experienced radiologist specializing in mammography interpretation. Your task is to generate a comprehensive medical report that includes both a data analysis section and a professional radiology report in expert medical terminology.
+
+**Image Input:**
+A mammogram image is provided for analysis.
+
+**Structured Data Input:**
+The following automated analysis results are provided in text format:
+
+**Object Detection Results:**
+1. Class: Mass, Confidence: 0.5162
+Bounding Box: [x1=197, y1=248, x2=225, y2=260]
+2. Class: Calc, Confidence: 0.3419
+Bounding Box: [x1=221, y1=259, x2=230, y2=264]
+
+**Image Classification Results:**
+1. Class: Benign, Confidence: 0.5241
+Benign Probability: 0.5241, Malignant Probability: 0.4759
+Inference time: 0.09 seconds
+
+**Required Report Format:**
+Your report must be divided into TWO CLEARLY SEPARATED SECTIONS with headers as follows:
+
+SECTION 1: DATA ANALYSIS SUMMARY
+- Provide a technical summary of the object detection and classification results
+- Describe each detected object with its confidence score and location
+- Explain what these technical findings might indicate from a data perspective
+- Include specific numerical values from the provided data
+
+SECTION 2: PROFESSIONAL RADIOLOGICAL ASSESSMENT
+- Write this section in the voice of an experienced radiologist (use proper medical terminology)
+- Begin with standard mammogram description (breast density, composition, etc.)
+- Detail significant findings using proper radiological terms (masses, calcifications, architectural distortions, etc.)
+- Include location descriptions using medical positioning terms (quadrants, clock positions)
+- Provide a BI-RADS assessment category (0-6) based on your analysis
+- Include appropriate follow-up recommendations based on findings
+
+**Important Guidelines:**
+1. Maintain a formal, professional tone throughout
+2. Use precise medical terminology in the second section
+3. Be comprehensive but concise
+4. Ensure your assessment in Section 2 is consistent with the data in Section 1
+5. If the image shows obvious abnormalities that aren't captured in the structured data, you may note them
+6. Include appropriate medical disclaimer about AI-assisted interpretation
+
+Based on the image and provided structured data, generate both sections of the report.

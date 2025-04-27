@@ -1,6 +1,6 @@
 Classification results for sample_image.jpg:
 --------------------------------------------------
-1. Class: Benign, Confidence: 0.5833
-   Benign Probability: 0.5833, Malignant Probability: 0.4167
-   Inference time: 0.12 seconds
+1. Class: Benign, Confidence: 0.5241
+   Benign Probability: 0.5241, Malignant Probability: 0.4759
+   Inference time: 0.09 seconds
 
