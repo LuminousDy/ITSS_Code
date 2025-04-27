@@ -42,8 +42,9 @@ This comprehensive framework provides an end-to-end solution for mammography ima
 │   │   └── utils/                    # Helper functions for VLM
 │   │
 │   ├── src/                          # Integration scripts
-│   │   └── main.py                   # Unified main script integrating OD, IC, and VLM
-│   │
+│   │   ├── plp_main.py               # Unified main script integrating OD, IC, and VLM
+│   │   └── frontend.py               # Frontend code
+│   │   
 │   ├── sample/                       # Sample data and results
 │   │   ├── sample_data/              # Sample mammography images 
 │   │   └── results/                  # Results output directory
@@ -343,6 +344,40 @@ python vlm_plp/vlm_main.py \
 The VLM generates a comprehensive medical report with two main sections:
 1. **Data Analysis Summary**: Technical analysis of detection and classification results
 2. **Professional Radiological Assessment**: Expert-like interpretation with medical terminology, including BI-RADS assessment and follow-up recommendations
+
+## Streamlit Web Interface
+
+The framework includes a user-friendly web interface built with Streamlit, allowing users to interact with the mammography analysis platform through a browser-based UI.
+
+### Features
+
+- **Interactive UI**: Modern, clean interface for uploading and analyzing mammography images
+- **Real-time Analysis**: Process mammography images and view results in real-time
+- **Comprehensive Results Display**: Organized tabs for object detection, classification, and medical report results
+- **Download Options**: Easily download detection results, classification details, and medical reports
+- **Progress Tracking**: Visual progress indicators during analysis pipeline execution
+
+### Running the Web Interface
+
+```bash
+# Navigate to the src directory
+cd src
+
+# Launch the Streamlit app
+streamlit run frontend.py
+```
+
+The interface will be accessible in your web browser at `http://localhost:8501`.
+
+### Using the Web Interface
+
+1. **Upload Image**: Click the file uploader to select a mammography image (JPG, JPEG, or PNG)
+2. **Generate Analysis**: Click the "Generate Comprehensive Analysis" button
+3. **View Results**: Explore the results in three tabs:
+   - **Object Detection**: View detected abnormalities with bounding boxes and detection details
+   - **Classification**: See benign/malignant classification results with confidence scores
+   - **Medical Report**: Read the comprehensive AI-generated medical report
+4. **Download Results**: Use the download buttons to save detection results, classification details, and the medical report
 
 ## Performance Metrics
 

@@ -6,9 +6,11 @@ opencv_contrib_python==4.11.0.86
 opencv_python==4.11.0.86
 opencv_python_headless==4.11.0.86
 pandas==2.2.3
+Pillow==11.2.1
 PyYAML==6.0.2
 PyYAML==6.0.2
 seaborn==0.13.2
+streamlit==1.44.1
 tensorflow==2.19.0
 torch==2.4.0
 tqdm==4.67.1
