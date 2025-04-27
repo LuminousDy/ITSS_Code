@@ -19,7 +19,7 @@ def parse_args():
                         help='Path to model weights (default: runs/classification/IC_20250427_170000/weights/best.keras)')
     parser.add_argument('--conf', type=float, default=0.5, help='Confidence threshold for classification')
     parser.add_argument('--imgsz', type=int, default=224, help='Image size for inference (224 for EfficientNetV2B0)')
-    parser.add_argument('--device', type=str, default='', help='Device to run on (empty for auto, cpu, 0, 1, etc.)')
+    parser.add_argument('--device', type=str, default='cpu', help='Device to run on (empty for auto, cpu, 0, 1, etc.)')
     parser.add_argument('--save', action='store_true', help='Save results to sample/results/')
     parser.add_argument('--show', action='store_true', help='Display results')
     
@@ -204,7 +204,7 @@ def classify_image(model, image_path, imgsz=224, conf=0.5):
     image = cv2.resize(image, (imgsz, imgsz))
     
     # Normalize pixel values to [0, 1]
-    image = image / 255.0
+    # image = image / 255.0
     
     # Add batch dimension
     image = np.expand_dims(image, axis=0)
