@@ -13,6 +13,9 @@ runs/detect/YOLOv8_20250422_122835/*
 !runs/detect/YOLOv8_20250422_122835/weights/
 runs/detect/YOLOv8_20250422_122835/weights/*
 !runs/detect/YOLOv8_20250422_122835/weights/best.pt
+runs/classification/*
+!runs/classification/IC_20250427_170000/weights/
+!runs/classification/IC_20250427_170000/weights/best.keras
 
 # Ignore editor-specific files
 .cursor
