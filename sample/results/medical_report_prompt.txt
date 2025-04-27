@@ -15,7 +15,7 @@ Bounding Box: [x1=221, y1=259, x2=230, y2=264]
 **Image Classification Results:**
 1. Class: Malignant, Confidence: 0.9387
 Benign Probability: 0.0613, Malignant Probability: 0.9387
-Inference time: 1.53 seconds
+Inference time: 4.31 seconds
 
 **Required Report Format:**
 Your report must be divided into TWO CLEARLY SEPARATED SECTIONS with headers as follows:
