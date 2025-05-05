@@ -1,6 +1,6 @@
 # Mammography Analysis Framework with Object Detection, Classification, and Medical Report Generation
 
-This comprehensive framework provides an end-to-end solution for mammography image analysis using object detection (YOLOv8), image classification (EfficientNetV2B0), and medical report generation (Vision-Language Model). The pipeline offers capabilities from data preprocessing through model training to performance evaluation and medical report generation.
+This comprehensive framework provides an end-to-end solution for mammography image analysis using object detection (YOLOv12), image classification (EfficientNetV2B0), and medical report generation (Vision-Language Model). The pipeline offers capabilities from data preprocessing through model training to performance evaluation and medical report generation.
 
 ## Repository Structure
 
@@ -26,7 +26,8 @@ This comprehensive framework provides an end-to-end solution for mammography ima
 │   │   │   ├── VinDr_data_augmentation.py  # VinDr-Mammo data augmentation
 │   │   │   ├── VinDr_data_preprocessing.py # Data preprocessing for VinDr
 │   │   │   ├── YOLOv8_train.py             # Training script for YOLOv8
-│   │   │   └── YOLOv8_test.py              # Testing and evaluation script
+│   │   │   ├── YOLOv8_test.py              # Testing and evaluation script
+│   │   │   └── YOLOv12_train.py            # Training script for YOLOv12
 │   │   ├── od_main.py                # Inference script for object detection
 │   │   └── utils/                    # Helper functions and utilities
 │   │
@@ -51,9 +52,13 @@ This comprehensive framework provides an end-to-end solution for mammography ima
 │   │
 │   └── runs/                         # Training outputs and results
 │       ├── detect/                   # Detection model outputs
-│       │   └── YOLOv8_[timestamp]/   # Experiment results
-│       │       ├── weights/          # Model checkpoints
-│       │       └── ...               # TensorBoard logs, metrics, visualizations
+│       │   ├── YOLOv8_[timestamp]/   # Experiment results of YOLOv8
+│       │   │   ├── weights/          # Model checkpoints
+│       │   │   └── ...               # TensorBoard logs, metrics, visualizations
+│       │   └── YOLOv12/              # Experiment results of YOLOv12
+│       │       ├── model_balenced.pt         # Model checkpoints with the most balanced performance
+│       │       ├── model_calc_optimized.pt   # Model checkpoints with the best performance on the calc class
+│       │       └── model_mass_optimized.pt   # Model checkpoints with the best performance on the mass class
 │       └── classification/           # Classification model outputs
 │           └── IC_[timestamp]/       # Experiment results
 │               ├── weights/          # Model checkpoints
@@ -63,7 +68,7 @@ This comprehensive framework provides an end-to-end solution for mammography ima
 ## Key Features
 
 - **Multi-Dataset Support**: Works with InBreast, VinDr-Mammo, and CBIS-DDSM datasets
-- **YOLOv8 Integration**: Utilizes state-of-the-art YOLOv8 architecture for accurate detection of calcifications and masses
+- **YOLOv12 Integration**: Utilizes state-of-the-art YOLOv12 architecture for accurate detection of calcifications and masses
 - **Image Classification**: EfficientNetV2B0-based classification of mammograms as benign or malignant
 - **Medical Report Generation**: AI-powered generation of comprehensive medical reports using VLM (Vision-Language Model)
 - **Comprehensive Data Preprocessing**: Converts various mammography formats to standardized formats
@@ -137,7 +142,7 @@ Run the complete analysis pipeline (detection, classification, and report genera
 ```bash
 python src/main.py pipeline \
   --image sample/sample_data/sample_image.jpg \
-  --od-model runs/detect/YOLOv8_20250422_122835/weights/best.pt \
+  --od-model runs/detect/YOLOv12/model_balenced.pt \
   --ic-model runs/classification/IC_20250427_170000/weights/best.keras \
   --vlm-model Qwen2.5-VL-7B \
   --od-conf 0.25 \
@@ -153,7 +158,7 @@ Run only the object detection component:
 ```bash
 python src/main.py od \
   --image sample/sample_data/sample_image.jpg \
-  --model runs/detect/YOLOv8_20250422_122835/weights/best.pt \
+  --model runs/detect/YOLOv12/model_balenced.pt \
   --conf 0.25 \
   --save \
   --show
@@ -227,11 +232,11 @@ python src/main.py vlm \
 
 ### Training Guide
 
-The framework uses YOLOv8, a state-of-the-art object detection model, for detecting calcifications and masses in mammography images. Follow these steps to train your own model:
+The framework uses YOLOv12, a state-of-the-art object detection model, for detecting calcifications and masses in mammography images. Follow these steps to train your own model:
 
 ### 1. Prepare Dataset
 
-Ensure your dataset is properly preprocessed and in the YOLOv8 format:
+Ensure your dataset is properly preprocessed and in the YOLOv12 format:
 - Images in the correct directories (`train/images/`, `valid/images/`)
 - Labels in the correct format and directories (`train/labels/`, `valid/labels/`)
 - `data.yaml` file with proper configuration
@@ -248,12 +253,12 @@ names: ['Mass', 'Calc']  # Class names
 
 ### 2. Start Training
 
-Train YOLOv8 model with customized parameters:
+Train YOLOv12 model with customized parameters:
 
 ```bash
-python od_plp/pipeline/YOLOv8_train.py \
+python od_plp/pipeline/YOLOv12_train.py \
   --data dataset/processed_dataset/CBIS-DDSM/data.yaml \
-  --model yolov8s.pt \
+  --model yolo12m.pt \
   --epochs 200 \
   --imgsz 640 \
   --batch 48 \
@@ -263,7 +268,7 @@ python od_plp/pipeline/YOLOv8_train.py \
 #### Key Training Parameters:
 
 - `--data`: Path to data.yaml file
-- `--model`: Base model (yolov8n.pt, yolov8s.pt, yolov8m.pt, yolov8l.pt, yolov8x.pt)
+- `--model`: Base model (yolo12n.pt, yolo12s.pt, yolo12m.pt, yolo12l.pt, yolo12x.pt)
 - `--epochs`: Number of training epochs
 - `--imgsz`: Input image size
 - `--batch`: Batch size
@@ -276,7 +281,7 @@ After training, evaluate the model's performance on a test dataset:
 ```bash
 python od_plp/pipeline/YOLOv8_test.py \
   --data dataset/processed_dataset/CBIS-DDSM/data.yaml \
-  --model runs/detect/YOLOv8_20250422_122835/weights/best.pt \
+  --model runs/detect/YOLOv12/model_balenced.pt \
   --conf 0.25 \
   --iou 0.7
 ```
@@ -412,7 +417,7 @@ The framework evaluates models using several metrics:
 
 ## Acknowledgements
 
-- YOLOv8 implementation by [Ultralytics](https://github.com/ultralytics/ultralytics)
+- YOLOv12 implementation by [Ultralytics](https://github.com/ultralytics/ultralytics)
 - The CBIS-DDSM dataset by [The Cancer Imaging Archive](https://wiki.cancerimagingarchive.net/display/Public/CBIS-DDSM)
 - VinDr-Mammo dataset by [Vingroup Big Data Institute](https://vindr.ai/datasets/mammo)
 - InBreast dataset by [INESC Porto](https://www.inf.ufg.br/~rogerio/inbreast/)
